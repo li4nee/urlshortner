@@ -14,10 +14,10 @@ app.listen(8000, async (err) => {
 });
 
 app.set("view engine", "ejs");
-app.set("views",path.resolve("./views"))
+app.set("views", path.resolve("./views"));
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 
 import urlRoute from "./routes/url.route.js";
 app.use("/url", urlRoute);
@@ -25,16 +25,11 @@ app.use("/url", urlRoute);
 import randomIDRoute from "./routes/randomID.js";
 app.use("/id", randomIDRoute);
 
-app.get("/test", async (req, res) => {
-  const allrandomID = await Url.find({});
-  res.render("home",{
-    ids:allrandomID
-  })
-});
+import staticRouter from "./routes/staticrouter.js";
+app.use("/", staticRouter);
 
-import staticRouter from "./routes/staticrouter.js"
-
-app.use("/",staticRouter)
+import signupLogin from "./routes/user.js";
+app.use("/user", signupLogin);
 
 connectDB(`${process.env.MONGO_URL}/${process.env.MONGO_COLLECTION}`)
   .then(() => {
