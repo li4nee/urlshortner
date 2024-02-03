@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UrlShortner</title>
+    <style>
+      body {
+        font-family: "Courier New", Courier, monospace;
+        text-align: center;
+        font-weight: 800;
+      }
+      .table {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+      th {
+        background-color: #d0cdcd;
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #b4b2b2;
+      }
+      td {
+        padding: 10px;
+        border: 1px solid #b4b2b2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>UrlShortner</h1>
+    <div>
+      <form action="/url" method="post">
+        <label>Enter your original url : </label>
+        <input
+          type="text"
+          placeholder="https://example.com/"
+          name="redirectURL"
+        />
+        <button type="submit">Generate</button>
+      </form>
+      <% if (locals.randomID) { %>
+      <p>
+        Your shortened url is :
+        <a
+          href="http://127.0.0.1:8000/id/<%= locals.randomID %>"
+          target="_blank"
+          >http://127.0.0.1:8000/id/<%= locals.randomID %></a
+        >
+      </p>
+      <% } %>
+    </div>
+    <div class="table">
+      <% if (locals.allUrl) { %>
+      <table>
+        <thead>
+          <th>S.no</th>
+          <th>Original URL</th>
+          <th>Shortened URL</th>
+          <th>Total Clicks</th>
+        </thead>
+        <tbody>
+          <% allUrl.forEach((url,count) => { %>
+          <tr>
+            <td><%= count+1%></td>
+            <td><%= url.redirectURL %></td>
+            <td>http://127.0.0.1:8000/id/<%=url.randomID%></td>
+            <td><%= url.logHistory.length %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>
