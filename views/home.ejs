@@ -29,10 +29,10 @@
     </style>
   </head>
   <body>
-    <h1>UrlShortner</h1>
+    <h1>UrlShortener</h1>
     <div>
       <form action="/url" method="post" id="urlform">
-        <label>Enter your original url : </label>
+        <label>Enter your original URL:</label>
         <input
           type="text"
           placeholder="https://example.com/"
@@ -43,12 +43,13 @@
       </form>
       <% if (locals.randomID) { %>
       <p>
-        Your shortened url is :
+        Your shortened URL is:
         <a
           href="http://127.0.0.1:8000/id/<%= locals.randomID %>"
           target="_blank"
-          >http://127.0.0.1:8000/id/<%= locals.randomID %></a
         >
+          http://127.0.0.1:8000/id/<%= locals.randomID %>
+        </a>
       </p>
       <% } %>
     </div>
@@ -56,18 +57,33 @@
       <% if (locals.allUrl) { %>
       <table>
         <thead>
-          <th>S.no</th>
-          <th>Original URL</th>
-          <th>Shortened URL</th>
-          <th>Total Clicks</th>
+          <tr>
+            <th>S.no</th>
+            <th>Original URL</th>
+            <th>Shortened URL</th>
+            <th>Total Clicks</th>
+            <% if (locals.allUrl.role == "ADMIN") { %>
+            <th>Created By</th>
+            <% } %>
+          </tr>
         </thead>
         <tbody>
-          <% allUrl.forEach((url,count) => { %>
+          <% locals.allUrl.forEach((url, count) => { %>
           <tr>
-            <td><%= count+1%></td>
+            <td><%= count + 1 %></td>
             <td><%= url.redirectURL %></td>
-            <td> <a href="http://127.0.0.1:8000/id/<%=url.randomID%>" target="_blank">http://127.0.0.1:8000/id/<%=url.randomID%></a></td>
+            <td>
+              <a
+                href="http://127.0.0.1:8000/id/<%= url.randomID %>"
+                target="_blank"
+              >
+                http://127.0.0.1:8000/id/<%= url.randomID %>
+              </a>
+            </td>
             <td><%= url.logHistory.length %></td>
+            <% if (locals.allUrl.role == "ADMIN") { %>
+            <td><%= url.name %></td>
+            <% } %>
           </tr>
           <% }) %>
         </tbody>

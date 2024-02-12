@@ -1,33 +1,29 @@
 import { getUser } from "../utils/settinguuid.js";
 
-const checkLogin = async (req, res, next) => {
-  const userUUID = req.cookies.uid;
-
-  if (!userUUID) {
-    return res.redirect("/login");
+async function checkForAuthentication(req, res, next) {
+  req.user = null;
+  const authorizationHeaderFromCookie = req.cookies?.uid;
+  if (!authorizationHeaderFromCookie) {
+    return next();
   }
+  const token = authorizationHeaderFromCookie;
+  const user = await getUser(token);
+  req.user = user;
+  return next();
+}
 
-  try {
-    const user = await getUser(userUUID);
-
-    if (!user) {
+function restrictTo(roles = []) {
+  return function (req, res, next) {
+    if (!req.user) {
       return res.redirect("/login");
     }
+    const userRole=req.user.role;
+    if (!roles.includes(userRole)) {
+      console.log("Unauthorized:", req.user, roles);
+      return res.end("UnAuthorized");
+    }
+    return next();
+  };
+}
 
-    req.user = user;
-    next();
-  } catch (error) {
-    console.error(error);
-    return res.redirect("/login");
-  }
-};
-const checkAuth = async (req, res, next) => {
-  const userUUID = req.cookies.uid;
-  const user = await getUser(userUUID);
-  if (user) {
-    req.user = user;
-  }
-  next();
-};
-
-export { checkLogin, checkAuth };
+export { restrictTo, checkForAuthentication };

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { checkAuth } from "./middlewares/auth.js";
+import {checkForAuthentication,restrictTo} from "./middlewares/auth.js";
 
 dotenv.config();
 
@@ -23,16 +23,17 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(checkForAuthentication);
 
 import urlRoute from "./routes/url.route.js";
-app.use("/url", urlRoute);
+app.use("/url", restrictTo(["NORMAL","ADMIN"]), urlRoute);
 
 import randomIDRoute from "./routes/randomID.js";
 app.use("/id", randomIDRoute);
 
 
 import staticRouter from "./routes/staticrouter.js";
-app.use("/",checkAuth,staticRouter);
+app.use("/",staticRouter);
 
 import signupLogin from "./routes/user.js";
 app.use("/user", signupLogin);

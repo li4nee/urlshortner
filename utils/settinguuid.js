@@ -7,7 +7,7 @@ dotenv.config();
 const secret = process.env.JWT_SECRET;
 
 const setUser = (user) => {
-  const signature = jwt.sign({ _id: user._id, email: user.email }, secret);
+  const signature = jwt.sign({ _id: user._id, email: user.email ,role:user.role}, secret);
   return signature;
 };
 
