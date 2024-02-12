@@ -5,10 +5,6 @@ const router = express.Router();
 
 router.route("/signup").post(registerUser);
 
-router.route("/signin").post(loginUser);
+router.route("/login").post(loginUser);
 
 export default router;
-
-
-// MONGO_URL=mongodb://localhost:27017
-// MONGO_COLLECTION=urlshortner

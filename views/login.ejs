@@ -6,22 +6,24 @@
   <title>UrlShortner - Login</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Courier New", Courier, monospace;
       background-color: #fafafa;
       margin: 0;
       padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       height: 100vh;
     }
 
-    div {
+    .container {
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px; /* Adjust the width as needed */
+      width: 300px;
+      margin-bottom: 20px;
     }
 
     h1 {
@@ -59,10 +61,35 @@
     button:hover {
       background-color: #6c6d6e;
     }
+
+    .error-message {
+        background-color: #d0cdcd;
+      text-align: center;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      height: 30px;
+    }
+
+    #messageContainer {
+        background-color: #d0cdcd;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      height: 30px;
+    }
   </style>
 </head>
 <body>
-  <div>
+    <% if (locals.message) { %>
+        <div id="messageContainer">
+      <div>
+        <p><%= locals.message %></p>
+      </div>
+    </div>
+    <% } %>
+  <div class="container">
     <h1>Login</h1>
     <form action="/user/login" method="post">
       <label for="email">Email</label>
@@ -72,5 +99,26 @@
       <button type="submit">Login</button>
     </form>
   </div>
+
+  <% if (locals.error) { %>
+    <p class="error-message"><%= locals.error %></p>
+  <% } %>
+
+  <script>
+    const messageContainer = document.getElementById('messageContainer');
+    const errorMessage = document.querySelector('.error-message');
+
+    if (messageContainer) {
+      setTimeout(() => {
+        messageContainer.style.display = 'none';
+      }, 3000);
+    }
+
+    if (errorMessage) {
+      setTimeout(() => {
+        errorMessage.style.display = 'none';
+      }, 3000);
+    }
+  </script>
 </body>
 </html>

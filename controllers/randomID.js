@@ -7,6 +7,4 @@ const sendRandomID = asyncHandler(async(req,res)=>{
     })
     res.redirect(log.redirectURL);
     })
-
-
 export {sendRandomID};

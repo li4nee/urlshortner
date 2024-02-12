@@ -31,12 +31,13 @@
   <body>
     <h1>UrlShortner</h1>
     <div>
-      <form action="/url" method="post">
+      <form action="/url" method="post" id="urlform">
         <label>Enter your original url : </label>
         <input
           type="text"
           placeholder="https://example.com/"
           name="redirectURL"
+          id="urlinput"
         />
         <button type="submit">Generate</button>
       </form>
@@ -65,7 +66,7 @@
           <tr>
             <td><%= count+1%></td>
             <td><%= url.redirectURL %></td>
-            <td>http://127.0.0.1:8000/id/<%=url.randomID%></td>
+            <td> <a href="http://127.0.0.1:8000/id/<%=url.randomID%>" target="_blank">http://127.0.0.1:8000/id/<%=url.randomID%></a></td>
             <td><%= url.logHistory.length %></td>
           </tr>
           <% }) %>

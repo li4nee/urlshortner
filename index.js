@@ -3,6 +3,9 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
 import path from "path";
+import cookieParser from "cookie-parser";
+import { checkAuth } from "./middlewares/auth.js";
+
 dotenv.config();
 
 const app = express();
@@ -13,11 +16,13 @@ app.listen(8000, async (err) => {
   }
 });
 
+
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 import urlRoute from "./routes/url.route.js";
 app.use("/url", urlRoute);
@@ -25,8 +30,9 @@ app.use("/url", urlRoute);
 import randomIDRoute from "./routes/randomID.js";
 app.use("/id", randomIDRoute);
 
+
 import staticRouter from "./routes/staticrouter.js";
-app.use("/", staticRouter);
+app.use("/",checkAuth,staticRouter);
 
 import signupLogin from "./routes/user.js";
 app.use("/user", signupLogin);
